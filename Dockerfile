@@ -6,11 +6,11 @@ USER node
 WORKDIR /home/node
 
 COPY package*.json ./
-RUN npm ci
+RUN yarn install --frozen-lockfile
 
 COPY --chown=node:node . .
-RUN npm run build \
-    && npm prune --production
+RUN yarn build \
+    && yarn install
 
 # ---
 
