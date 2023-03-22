@@ -1,18 +1,28 @@
-FROM node:16.19.0
-RUN apt-get update && \
-        apt install -y --no-install-recommends
-        
-WORKDIR /max/app
+FROM node:16-alpine as builder
 
-COPY ./package.json ./
-COPY ./yarn.lock ./
-COPY ./nest-cli.json ./
-COPY ./tsconfig.build ./
-COPY ./tsconfig.json ./
+ENV NODE_ENV build
 
-RUN yarn install
+USER node
+WORKDIR /home/node
 
-COPY .src/ /max/app/src/
+COPY package*.json ./
+RUN npm ci
 
-EXPOSE 8080
-CMD [ "yarn", "start" ]
+COPY --chown=node:node . .
+RUN npm run build \
+    && npm prune --production
+
+# ---
+
+FROM node:16-alpine
+
+ENV NODE_ENV production
+
+USER node
+WORKDIR /home/node
+
+COPY --from=builder --chown=node:node /home/node/package*.json ./
+COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
+COPY --from=builder --chown=node:node /home/node/dist/ ./dist/
+
+CMD ["node", "dist/main.js"]
