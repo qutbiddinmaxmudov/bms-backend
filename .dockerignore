@@ -1,0 +1,7 @@
+# infrastructure
+.git
+.github
+kubernetes
+test
+node_modules
+.preiettierrc
