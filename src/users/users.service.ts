@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './entities/users.entity';
 import { genSalt, hash } from 'bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -78,6 +79,16 @@ export class UsersService {
       {
         isActive: true,
       },
+    );
+  }
+
+  async update(id: number, userDto: UpdateUserDto) {
+    console.log(id, userDto);
+    return this.repository.update(
+      {
+        id,
+      },
+      userDto,
     );
   }
 }
