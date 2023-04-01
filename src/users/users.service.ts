@@ -45,7 +45,14 @@ export class UsersService {
     return this.repository.findOneBy({ id });
   }
 
-  disable(id: number) {
+  async disable(id: number) {
+    const user = await this.findById(id);
+    if (!user) {
+      throw new HttpException('User not found.', 404);
+    }
+    if (!user.isActive) {
+      throw new HttpException('User already disabled!', 400);
+    }
     return this.repository.update(
       {
         id,
@@ -56,7 +63,14 @@ export class UsersService {
     );
   }
 
-  activate(id: number) {
+  async activate(id: number) {
+    const user = await this.findById(id);
+    if (!user) {
+      throw new HttpException('User not found.', 404);
+    }
+    if (user.isActive) {
+      throw new HttpException('User already active!', 400);
+    }
     return this.repository.update(
       {
         id,

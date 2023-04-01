@@ -26,8 +26,13 @@ export class UsersController {
     return this.usersService.findById(+id);
   }
 
-  @Patch(':id')
+  @Patch('disable/:id')
   disable(@Param('id') id: string) {
     return this.usersService.disable(+id);
+  }
+
+  @Patch('activate/:id')
+  activate(@Param('id') id: string) {
+    return this.usersService.activate(+id);
   }
 }
