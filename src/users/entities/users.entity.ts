@@ -32,7 +32,7 @@ export class UserEntity {
   finishDate: Date;
 
   @Column({ default: 'owner' })
-  role: 'owner' | 'employer';
+  role: 'admin' | 'owner' | 'employer';
 
   @Column({ default: true })
   isActive: boolean;

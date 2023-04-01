@@ -1,4 +1,4 @@
-import { IsLowercase, Length, Matches } from 'class-validator';
+import { IsLowercase, Length, Matches, Validate } from 'class-validator';
 
 export class CreateUserDto {
   firstName?: string;
@@ -25,5 +25,8 @@ export class CreateUserDto {
 
   contact?: string;
 
-  role?: 'owner' | 'employer';
+  @Matches(/^(admin|owner|employer)$/, {
+    message: 'Incorrect user role!',
+  })
+  role?: 'admin' | 'owner' | 'employer';
 }
