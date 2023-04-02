@@ -26,9 +26,14 @@ export class SettingsService implements OnModuleInit {
     ];
 
     Promise.all(
-      defaultSettings.map((setting) => {
-        const settingEntity = this.repository.create(setting);
-        this.repository.save(settingEntity);
+      defaultSettings.map(async (setting) => {
+        const savedSetting = await this.repository.findOneBy({
+          name: setting.name,
+        });
+        if (!savedSetting) {
+          const settingEntity = this.repository.create(setting);
+          await this.repository.save(settingEntity);
+        }
       }),
     );
   }
