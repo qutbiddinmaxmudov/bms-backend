@@ -13,11 +13,11 @@ import { SettingsEntity } from './settings/entities/settings.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 55000,
-      username: 'postgres',
-      password: 'postgrespw',
-      database: 'bms',
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [UserEntity, SettingsEntity],
       synchronize: true,
     }),
