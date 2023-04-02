@@ -1,33 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateSettingDto } from './dto/create-setting.dto';
 import { UpdateSettingDto } from './dto/update-setting.dto';
-import { SettingEntity } from './entities/setting.entity';
+import { SettingsEntity } from './entities/settings.entity';
 
 @Injectable()
-export class SettingsService {
+export class SettingsService implements OnModuleInit {
   constructor(
-    @InjectRepository(SettingEntity)
-    private repository: Repository<SettingEntity>,
+    @InjectRepository(SettingsEntity)
+    private repository: Repository<SettingsEntity>,
   ) {}
-  create(createSettingDto: CreateSettingDto) {
-    return 'This action adds a new setting';
+
+  async onModuleInit() {
+    const defaultSettings: UpdateSettingDto[] = [
+      {
+        name: 'budget',
+        value: 10000,
+        accessLevel: 'owner',
+      },
+      {
+        name: 'currency',
+        value: 'USD',
+        accessLevel: 'owner',
+      },
+    ];
+
+    Promise.all(
+      defaultSettings.map((setting) => {
+        const settingEntity = this.repository.create(setting);
+        this.repository.save(settingEntity);
+      }),
+    );
   }
 
-  findAll() {
-    return `This action returns all settings`;
+  findAll(): Promise<SettingsEntity[]> {
+    return this.repository.findBy({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} setting`;
+  findOne(name: string) {
+    return this.repository.findBy({ name });
   }
 
-  update(id: number, updateSettingDto: UpdateSettingDto) {
-    return `This action updates a #${id} setting`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} setting`;
+  update(settings: UpdateSettingDto[]) {
+    return `This action updates settings`;
   }
 }

@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { SettingsController } from './settings.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SettingEntity } from './entities/setting.entity';
+import { SettingsEntity } from './entities/settings.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SettingEntity])],
+  imports: [TypeOrmModule.forFeature([SettingsEntity])],
   exports: [SettingsService],
   controllers: [SettingsController],
   providers: [SettingsService],

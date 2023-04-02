@@ -1,7 +1,10 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateSettingDto } from './create-setting.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateSettingDto extends PartialType(CreateSettingDto) {
+export class UpdateSettingDto {
+  @ApiProperty()
   name: string;
-  value: string;
+  @ApiProperty()
+  value: any;
+  @ApiProperty()
+  accessLevel: 'admin' | 'owner' | 'employer';
 }
