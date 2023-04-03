@@ -12,7 +12,7 @@ export class SettingsController {
   }
 
   @Get(':name')
-  findByName(@Param() name: string) {
+  findByName(@Param('name') name: string) {
     return this.settingsService.findOne(name);
   }
 
