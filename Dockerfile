@@ -18,6 +18,13 @@ FROM node:16-alpine
 
 ENV NODE_ENV production
 
+LABEL maintainer="Maxmudov qutbiddin.makhmudov@gmail.com"
+
+ARG IMAGE_NAME=bms
+ARG IMAGE_TAG=latest
+
+LABEL name=$IMAGE_NAME tag=IMAGE_TAG
+
 USER node
 WORKDIR /home/node
 
@@ -25,4 +32,5 @@ COPY --from=builder --chown=node:node /home/node/package*.json ./
 COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
 COPY --from=builder --chown=node:node /home/node/dist/ ./dist/
 
+EXPOSE 8000
 CMD ["node", "dist/main.js"]
