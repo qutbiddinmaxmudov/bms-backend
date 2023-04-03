@@ -83,7 +83,6 @@ export class UsersService {
   }
 
   async update(id: number, userDto: UpdateUserDto) {
-    console.log(id, userDto);
     return this.repository.update(
       {
         id,
