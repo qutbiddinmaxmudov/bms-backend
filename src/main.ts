@@ -7,13 +7,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: false,
   });
-
   const config = new DocumentBuilder()
     .setTitle('BMS Api')
-    .addBearerAuth({
-      type: 'http',
-      description: 'Take token from auth/login api.',
-    })
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {});
