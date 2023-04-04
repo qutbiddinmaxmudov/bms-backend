@@ -19,10 +19,7 @@ ENV NODE_ENV production
 
 LABEL maintainer="Maxmudov qutbiddin.makhmudov@gmail.com"
 
-ARG IMAGE_NAME=bms
-ARG IMAGE_TAG=latest
-
-LABEL name=$IMAGE_NAME tag=IMAGE_TAG
+LABEL name=bms tag=latest
 
 USER node
 WORKDIR /home/node
