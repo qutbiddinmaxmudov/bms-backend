@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: false,
+    // logger: false,
   });
   const config = new DocumentBuilder()
     .setTitle('BMS Api')
@@ -15,6 +15,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document, {});
 
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  });
   await app.listen(process.env.PORT);
 }
 bootstrap();
