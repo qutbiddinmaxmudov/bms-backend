@@ -13,18 +13,20 @@ export class AuthService {
   ) {}
 
   async validateUser({ username, password }: LoginUserDto) {
-    const user = await this.userService.findOneByUsername(username);
+    const { password: userPassword, ...user } =
+      await this.userService.findOneByUsername(username);
     if (!user) {
       throw new HttpException('Incorrect username or password', 404);
     }
-    const correctPassword = await compare(password, user.password);
+    const correctPassword = await compare(password, userPassword);
     if (!correctPassword) {
       throw new HttpException('Incorrect username or password', 404);
     }
-    return this.login(user);
+    const access = await this.login(user);
+    return { access, user };
   }
 
-  async login(user: UserEntity) {
+  async login(user: Omit<UserEntity, 'password'>) {
     const payload = { username: user.username, sub: user.id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
