@@ -8,7 +8,7 @@ export class AppService {
     return 'Hello World!!!';
   }
 
-  async getProfile(username) {
+  async getProfile(username: string) {
     const { password, ...user } = await this.userService.findOneByUsername(
       username,
     );

@@ -15,7 +15,6 @@ export class AppController {
   }
 
   @Get('profile')
-  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   getProfile(@Request() req: { user: UserDto }) {
     return this.appService.getProfile(req.user.username);
