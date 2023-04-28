@@ -13,11 +13,11 @@ export class AuthService {
   ) {}
 
   async validateUser({ username, password }: LoginUserDto) {
-    const { password: userPassword, ...user } =
-      await this.userService.findOneByUsername(username);
-    if (!user) {
+    const result = await this.userService.findOneByUsername(username);
+    if (!result) {
       throw new HttpException('Incorrect username or password', 404);
     }
+    const { password: userPassword, ...user } = result;
     const correctPassword = await compare(password, userPassword);
     if (!correctPassword) {
       throw new HttpException('Incorrect username or password', 404);
